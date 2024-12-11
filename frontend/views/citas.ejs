@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sección</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+</head>
+<body>
+    <!-- inicio menu desplegable-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Centro Médico</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" href="/home">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/pacientes">Pacientes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/citas">Citas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/enfermera">Enfemeras</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/habitacion">Habitaciones</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav> <!-- fin menu desplegable-->
+
+  <!-- Contenido Principal -->
+  <div class="container mt-5">
+    <h1 class="text-center">Gestión de citas en el centro medico</h1>
+    <p class="text-center">Aquí puedes ver, gestionar y agendar nuevas citas con el personal medico.</p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <!-- Botón para abrir el formulario en un modal -->
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
+            Agendar Cita
+        </button>
+    </div>
+</div>
+
+<!-- Sección de Consultas -->
+<div class="container mt-5">
+    <h2 class="text-center">Consultas</h2>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <!-- Botón para mostrar citas con traumatologo -->
+    <button class="btn btn-secondary" id="btn-traumatologo" data-bs-toggle="modal" data-bs-target="#modalTraumatologos">
+       Citas con Traumatólogos
+    </button>
+
+    <button class="btn btn-secondary" id="btn-general" data-bs-toggle="modal" data-bs-target="#modalGenerales">
+        Citas con Medicina general
+    </button>
+
+        <!-- Botón para mostrar doctor con mas citas -->
+        <button class="btn btn-secondary" id="btn-doctor-mas-citas" type="button" data-bs-toggle="modal" data-bs-target="#modalDoctorMasCitas">
+            Doctor con mas citas agendadas
+        </button>
+        <!-- Botón para mostrar los doctores que han visto pacientes menores de 20 años -->
+        <button class="btn btn-secondary" id="btn-mult-doctores" type="button" data-bs-toggle="modal" data-bs-target="#modalMultDoctores">
+          Doctores con pacientes menores de edad 
+      </button>
+      <!-- boton que muestra los motivos mas comunes de ida al centro medico-->
+      <button class="btn btn-secondary" id="btn-motivos-comunes" type="button" data-bs-toggle="modal" data-bs-target="#modalMotivosComunes">
+        Motivos mas comunes de atencion
+    </button>
+    </div>
+</div>
+
+<!-- Modal para Agendar Cita -->
+<div class="modal fade" id="modalAgendarCita" tabindex="-1" aria-labelledby="modalAgendarCitaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgendarCitaLabel">Agendar Cita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgendarCita">
+                    <div class="mb-3">
+                        <label for="id_usuario" class="form-label">ID del Paciente</label>
+                        <input type="number" class="form-control" id="id_usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_doctor" class="form-label">ID del Doctor</label>
+                        <input type="number" class="form-control" id="id_doctor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo</label>
+                        <textarea class="form-control" id="motivo" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fecha" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Agendar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mostrar los motivos más comunes de ida al centro medico-->
+<div class="modal fade" id="modalMotivosComunes" tabindex="-1" aria-labelledby="modalMotivosComunesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMotivosComunesLabel">Motivos Más Comunes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Motivo</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaMotivosComunes">
+                        <!-- Aquí se insertarán las filas -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal para mostrar las citas con medicina general-->
+<div class="modal fade" id="modalGenerales" tabindex="-1" aria-labelledby="modalGeneralesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalGeneralesLabel">Citas con Medicina General</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Paciente</th>
+                            <th>Apellido del Paciente</th>
+                            <th>Nombre del Doctor</th>
+                            <th>Especialidad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaGenerales">
+                        <!-- Aquí se insertarán las filas -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mostrar las citas de pacientes con traumatologos -->
+<div class="modal fade" id="modalTraumatologos" tabindex="-1" aria-labelledby="modalTraumatologosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTraumatologosLabel">Citas con Traumatólogos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Paciente</th>
+                            <th>Nombre del Doctor</th>
+                            <th>Especialidad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaTraumatologos">
+                        <!-- Aquí se insertarán las filas -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mostrar el doctor con más citas -->
+<div class="modal fade" id="modalDoctorMasCitas" tabindex="-1" aria-labelledby="modalDoctorMasCitasLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDoctorMasCitasLabel">Doctor con Más Citas Agendadas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="modalBodyDoctorMasCitas">
+                Cargando información...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mostrar doctores con pacientes menores de edad -->
+<div class="modal fade" id="modalMultDoctores" tabindex="-1" aria-labelledby="modalMultDoctoresLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMultDoctoresLabel">Doctores con Pacientes menores de edad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Doctor</th>
+                            <th>Especialidad</th>
+                            <th>Total de Pacientes menores de edad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaMenoresDeEdad">
+                        <!-- Aquí van los datos!!!! -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('btn-general').addEventListener('click', async function () {
+    const tabla = document.getElementById('tablaGenerales');
+
+    tabla.innerHTML = '<tr><td colspan="5">Cargando...</td></tr>';
+
+    try {
+        const response = await fetch('http://localhost:8080/citas/general');
+        if (!response.ok) {
+            throw new Error('Error al obtener las citas con doctores generales');
+        }
+
+        const data = await response.json();
+
+        if (data.length === 0) {
+            tabla.innerHTML = '<tr><td colspan="5">No hay citas con doctores generales.</td></tr>';
+            return;
+        }
+
+        tabla.innerHTML = '';
+        data.forEach(cita => {
+            const fila = `
+                <tr>
+                    <td>${cita.paciente}</td>
+                    <td>${cita.apellido}</td>
+                    <td>${cita.doctor}</td>
+                    <td>${cita.especialidad}</td>
+                    <td>${cita.fecha}</td>
+                </tr>
+            `;
+            tabla.insertAdjacentHTML('beforeend', fila);
+        });
+    } catch (error) {
+        console.error(error);
+        tabla.innerHTML = `<tr><td colspan="5" style="color: red;">Error: ${error.message}</td></tr>`;
+    }
+});
+</script>
+
+
+<script> //Script que conecta el formulario con el backend y la base de datos!!//
+    document.getElementById('formAgendarCita').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevenir recarga de la página
+
+        const id_usuario = document.getElementById('id_usuario').value;
+        const id_doctor = document.getElementById('id_doctor').value;
+        const motivo = document.getElementById('motivo').value;
+        const fecha = document.getElementById('fecha').value;
+
+        try {
+            const response = await fetch('http://localhost:8080/citas/agendar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id_usuario,
+                    id_doctor,
+                    motivo,
+                    fecha,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al agendar la cita');
+            }
+
+            const data = await response.json();
+            alert(data.message); // Mostrar mensaje de éxito
+            document.getElementById('formAgendarCita').reset(); // Limpiar el formulario
+        } catch (error) {
+            console.error(error);
+            alert('Error: ' + error.message);
+        }
+    });
+</script>
+
+
+<script>
+    document.getElementById('btn-motivos-comunes').addEventListener('click', async function () {
+        const tabla = document.getElementById('tablaMotivosComunes');
+        tabla.innerHTML = '<tr><td colspan="2">Cargando...</td></tr>'; // Mensaje inicial
+
+        try {
+            // Realiza la solicitud al backend
+            const response = await fetch('http://localhost:8080/citas/motivos-mas-comunes');
+
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos');
+            }
+
+            const data = await response.json();
+
+            // Limpiar la tabla
+            tabla.innerHTML = '';
+
+            // Llenar la tabla con los datos obtenidos
+            data.forEach(motivo => {
+                const fila = `
+                    <tr>
+                        <td>${motivo.motivo}</td>
+                        <td>${motivo.total}</td>
+                    </tr>
+                `;
+                tabla.insertAdjacentHTML('beforeend', fila);
+            });
+        } catch (error) {
+            console.error(error);
+            tabla.innerHTML = '<tr><td colspan="2" style="color: red;">Error: ' + error.message + '</td></tr>';
+        }
+    });
+</script>
+
+
+<script>
+    document.getElementById('btn-mult-doctores').addEventListener('click', async function () {
+        const tabla = document.getElementById('tablaMenoresDeEdad');
+        tabla.innerHTML = '<tr><td colspan="3">Cargando...</td></tr>'; // Mensaje inicial
+
+        try {
+            // Realiza la solicitud al backend
+            const response = await fetch('http://localhost:8080/citas/paciente-menor-edad');
+
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos');
+            }
+
+            const data = await response.json();
+
+            // Limpiar la tabla
+            tabla.innerHTML = '';
+
+            // Llenar la tabla con los datos obtenidos
+            data.forEach(doctor => {
+                const fila = `
+                    <tr>
+                        <td>${doctor.nombre}</td>
+                        <td>${doctor.especialidad}</td>
+                        <td>${doctor.total_pacientes}</td>
+                    </tr>
+                `;
+                tabla.insertAdjacentHTML('beforeend', fila);
+            });
+        } catch (error) {
+            console.error(error);
+            tabla.innerHTML = '<tr><td colspan="3" style="color: red;">Error: ' + error.message + '</td></tr>';
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('btn-doctor-mas-citas').addEventListener('click', async function () {
+        const modalBody = document.getElementById('modalBodyDoctorMasCitas');
+        modalBody.innerHTML = 'Cargando información...'; // Mensaje inicial
+
+        try {
+            // Realiza la solicitud al backend
+            const response = await fetch('http://localhost:8080/citas/max');
+
+            if (!response.ok) {
+                throw new Error('Error al obtener la información');
+            }
+
+            const data = await response.json();
+
+            // Mostrar la información del doctor con más citas
+            modalBody.innerHTML = `
+                <p><strong>Nombre del Doctor:</strong> ${data.nombre}</p>
+                <p><strong>Especialidad del Doctor:</strong> ${data.especialidad}</p>
+                <p><strong>Total de Citas:</strong> ${data.total_citas}</p>
+            `;
+        } catch (error) {
+            console.error(error);
+            modalBody.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        }
+    });
+</script>
+
+
+<script>
+    document.getElementById('btn-traumatologo').addEventListener('click', async function () {
+        const tablaCitas = document.getElementById('tablaTraumatologos');
+        tablaCitas.innerHTML = '<tr><td colspan="4">Cargando...</td></tr>'; // Mensaje inicial
+
+        try {
+            // Realizar la solicitud al backend
+            const response = await fetch('http://localhost:8080/citas/traumatologo');
+
+            if (!response.ok) {
+                throw new Error('Error al obtener citas con traumatólogos');
+            }
+
+            const data = await response.json();
+
+            // Limpiar la tabla
+            tablaCitas.innerHTML = '';
+
+            // Insertar las citas en la tabla
+            data.forEach(cita => {
+                const fila = `
+                    <tr>
+                        <td>${cita.name}</td>
+                        <td>${cita.nombre}</td>
+                        <td>${cita.especialidad}</td>
+                        <td>${cita.fecha}</td>
+                    </tr>
+                `;
+                tablaCitas.insertAdjacentHTML('beforeend', fila);
+            });
+        } catch (error) {
+            console.error(error);
+            tablaCitas.innerHTML = '<tr><td colspan="4" style="color: red;">Error: ' + error.message + '</td></tr>';
+        }
+    });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

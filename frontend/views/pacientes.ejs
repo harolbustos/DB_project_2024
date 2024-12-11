@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sección</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+</head>
+<body>
+    <!-- inicio menu desplegable-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Centro Médico</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="/home">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pacientes">Pacientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/citas">Citas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/enfermera">Enfemeras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/habitacion">Habitaciones</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav> <!-- fin menu desplegable-->
+
+  <!-- Contenido Principal -->
+  <div class="container mt-5">
+    <h1 class="text-center">Gestión de Pacientes</h1>
+    <p class="text-center">Aquí puedes registrar, ver y gestionar la información de cada uno de los pacientes del centro médico.</p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <!-- Botón para abrir el formulario en un modal -->
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalFormularioPaciente">
+            Registrar Paciente
+        </button>
+        <!-- Botón para ver la tabla -->
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#tablaPaciente" aria-expanded="false" aria-controls="tablaPaciente">
+            Ver Pacientes
+        </button>
+    </div>
+</div>
+
+<!-- Sección de Consultas -->
+<div class="container mt-5">
+    <h2 class="text-center">Consultas</h2>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <!-- Botón para ver la edad más grande -->
+        <button class="btn btn-secondary" id="btn-edad-maxima" type="button" data-bs-toggle="modal" data-bs-target="#modalEdadMaxima">
+            Paciente Mayor
+        </button>
+        <!-- Botón para total de facturas por paciente -->
+        <button class="btn btn-secondary" id="btn-total-facturas" type="button" data-bs-toggle="modal" data-bs-target="#modalTotalFacturas">
+            Total de Facturas por Paciente
+        </button>
+        <!-- Botón para pacientes atendidos por múltiples doctores -->
+        <button class="btn btn-secondary" id="btn-mult-doctores" type="button" data-bs-toggle="modal" data-bs-target="#modalMultDoctores">
+          Pacientes con Múltiples Doctores
+      </button>
+    </div>
+</div>
+  
+  </div>
+
+  <!-- Modal para pacientes atendidos por múltiples doctores -->
+<div class="modal fade" id="modalMultDoctores" tabindex="-1" aria-labelledby="modalMultDoctoresLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="modalMultDoctoresLabel">Pacientes con Múltiples Doctores</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body" id="modal-body-mult-doctores">
+              <!-- Aquí se cargará dinámicamente la información -->
+              Cargando información...
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+   <!--Modal para mostrar el total de facturas por cliente-->
+  <div class="modal fade" id="modalTotalFacturas" tabindex="-1" aria-labelledby="modalTotalFacturasLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTotalFacturasLabel">Total de Facturas por Paciente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="modal-body-facturas">
+                <!-- Aquí se cargará dinámicamente la información -->
+                Cargando información...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Modal para mostrar la edad más grande -->
+<div class="modal fade" id="modalEdadMaxima" tabindex="-1" aria-labelledby="modalEdadMaximaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEdadMaximaLabel">Edad Más Grande</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body" id="modal-body-edad">
+          <!-- Aquí se cargará dinámicamente la información -->
+          Cargando información...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Modal para el Formulario -->
+  <div class="modal fade" id="modalFormularioPaciente" tabindex="-1" aria-labelledby="modalFormularioPacienteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalFormularioPacienteLabel">Registrar Paciente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formRegistroPaciente">
+            <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="Ingresa el ID del paciente" required>
+            </div>
+            <div class="mb-3">
+                <label for="habitacion" class="form-label">Número de Habitación</label>
+                <input type="text" class="form-control" id="habitacion" name="habitacion" placeholder="Ingresa el número de habitación del paciente" required>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa el nombre del paciente" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingresa el apellido del paciente" required>
+            </div>
+            <div class="mb-3">
+                <label for="sexo" class="form-label">Sexo</label>
+                <input type="text" class="form-control" id="sexo" name="sexo" placeholder="Ingresa el sexo del paciente (primera letra mayúscula)" required>
+            </div>
+            <div class="mb-3">
+                <label for="edad" class="form-label">Edad</label>
+                <input type="text" class="form-control" id="edad" name="edad" placeholder="Ingresa la edad del paciente" required>
+            </div>
+            <div class="mb-3">
+                <label for="rut" class="form-label">RUT</label>
+                <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingresa el RUT del paciente" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+        </form>        
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla para Listar Pacientes -->
+  <div class="collapse mt-5 w-75 mx-auto" id="tablaPaciente">
+    <h2 class="text-center">Lista de Pacientes</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+            <th>ID</th>
+            <th>Habitación</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Sexo</th>
+            <th>Edad</th>
+            <th>RUT</th>
+        </tr>
+      </thead>
+      <tbody id="tablaPacientes">
+        <!-- Aquí iran apareciendo los pacientes dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Manejar el envío del formulario
+    document.getElementById("formRegistroPaciente").addEventListener("submit", async function(event) {
+        event.preventDefault(); // Evitar recargar la página
+
+        // Obtener los datos del formulario
+        const formData = new FormData(this);
+        const pacienteData = {
+            id_usuario: formData.get("id"),
+            num_hab: formData.get("habitacion"),
+            name: formData.get("nombre"),
+            apellido: formData.get("apellido"),
+            sexo: formData.get("sexo"),
+            age: formData.get("edad"),
+            rut: formData.get("rut")
+        };
+
+        try {
+            // Enviar los datos al backend
+            const response = await fetch("http://localhost:8080/user/registrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(pacienteData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Error al registrar el paciente");
+            }
+
+            alert("Paciente registrado exitosamente");
+            // Opcional: Limpiar el formulario o cerrar el modal
+            this.reset();
+            document.querySelector('.btn-close').click(); // Cierra el modal
+        } catch (error) {
+            console.error(error);
+            alert(`Error: ${error.message}`);
+        }
+    });
+</script>
+
+
+  <script>
+    async function cargarPacientes() {
+        const tablaPacientes = document.getElementById("tablaPacientes");
+        tablaPacientes.innerHTML = "<tr><td colspan='7'>Cargando información...</td></tr>"; // Mensaje inicial
+
+        try {
+            // Realiza la solicitud al backend
+            const response = await fetch("http://localhost:8080/user/pacientes-todos");
+
+            if (!response.ok) {
+                throw new Error("Error al obtener la información del servidor");
+            }
+
+            const data = await response.json();
+
+            // Limpiar la tabla antes de llenarla
+            tablaPacientes.innerHTML = "";
+
+            // Agregar filas a la tabla con los datos obtenidos
+            data.forEach(paciente => {
+                const fila = `
+                    <tr>
+                        <td>${paciente.id_usuario}</td>
+                        <td>${paciente.num_hab || 'N/A'}</td>
+                        <td>${paciente.name}</td>
+                        <td>${paciente.apellido || 'N/A'}</td>
+                        <td>${paciente.sexo}</td>
+                        <td>${paciente.age}</td>
+                        <td>${paciente.rut}</td>
+                    </tr>
+                `;
+                tablaPacientes.innerHTML += fila;
+            });
+        } catch (error) {
+            // Manejar errores
+            tablaPacientes.innerHTML = `<tr><td colspan='7' style="color: red;">Error: ${error.message}</td></tr>`;
+        }
+    }
+
+    // Vincular el evento click al botón para cargar pacientes
+    document.querySelector("[data-bs-target='#tablaPaciente']").addEventListener("click", cargarPacientes);
+</script>
+
+  <script>
+    // Función para obtener pacientes atendidos por múltiples doctores
+    async function obtenerPacientesMultDoctores() {
+        const modalBody = document.getElementById("modal-body-mult-doctores");
+        modalBody.innerHTML = "Cargando información..."; // Mensaje inicial
+
+        try {
+            // Realiza la solicitud al backend
+            const response = await fetch("http://localhost:8080/user/multiples-doctors");
+
+            if (!response.ok) {
+                throw new Error("Error al obtener la información del servidor");
+            }
+
+            const data = await response.json();
+
+            // Construir la tabla con los datos
+            let html = `<table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Total Doctores</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            data.forEach(paciente => {
+                html += `
+                    <tr>
+                        <td>${paciente.name}</td>
+                        <td>${paciente.fecha}</td>
+                        <td>${paciente.total_doctores}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+
+            // Muestra la tabla en el modal
+            modalBody.innerHTML = html;
+        } catch (error) {
+            // Manejar errores
+            modalBody.innerHTML = `
+                <p style="color: red;">Error: ${error.message}</p>
+            `;
+        }
+    }
+
+    // Vincular el evento click al botón
+    document.getElementById("btn-mult-doctores").addEventListener("click", obtenerPacientesMultDoctores);
+</script>
+
+  <script>
+    // Función para obtener la información de la edad máxima
+    async function obtenerEdadMaxima() {
+      const modalBody = document.getElementById("modal-body-edad");
+      modalBody.innerHTML = "Cargando información..."; // Mensaje inicial
+  
+      try {
+        // Hacer la solicitud al backend
+        const response = await fetch("http://localhost:8080/user/edad-maxima");
+  
+        if (!response.ok) {
+          throw new Error("Error al obtener la información del servidor");
+        }
+  
+        const data = await response.json();
+  
+        // Mostrar la información en el modal
+        modalBody.innerHTML = `
+          <p><strong>Nombre:</strong> ${data.name}</p>
+          <p><strong>Edad:</strong> ${data.age} años</p>
+        `;
+      } catch (error) {
+        // Manejar errores
+        modalBody.innerHTML = `
+          <p style="color: red;">Error: ${error.message}</p>
+        `;
+      }
+    }
+  
+    // Vincular el evento click al botón
+    document.getElementById("btn-edad-maxima").addEventListener("click", obtenerEdadMaxima);
+  </script>
+
+<script>
+  // Función para obtener el total de facturas por paciente
+  async function obtenerTotalFacturas() {
+      const modalBody = document.getElementById("modal-body-facturas");
+      modalBody.innerHTML = "Cargando información..."; // Mensaje inicial
+
+      try {
+          // Realiza la solicitud al backend
+          const response = await fetch("http://localhost:8080/user/total-facturas");
+
+          if (!response.ok) {
+              throw new Error("Error al obtener la información del servidor");
+          }
+
+          const data = await response.json();
+
+          // Construir la tabla con los datos
+          let html = `<table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>ID Usuario</th>
+                      <th>Nombre</th>
+                      <th>Edad</th>
+                      <th>Total Facturado</th>
+                  </tr>
+              </thead>
+              <tbody>`;
+
+          data.forEach(paciente => {
+              html += `
+                  <tr>
+                      <td>${paciente.id_usuario}</td>
+                      <td>${paciente.name}</td>
+                      <td>${paciente.age}</td>
+                      <td>$${paciente.total_facturado}</td>
+                  </tr>
+              `;
+          });
+
+          html += `</tbody></table>`;
+
+          // Muestra la tabla en el modal
+          modalBody.innerHTML = html;
+      } catch (error) {
+          // Manejar errores
+          modalBody.innerHTML = `
+              <p style="color: red;">Error: ${error.message}</p>
+          `;
+      }
+  }
+
+  // Vincular el evento click al botón
+  document.getElementById("btn-total-facturas").addEventListener("click", obtenerTotalFacturas);
+</script>
+
+
+</body>
+</html>

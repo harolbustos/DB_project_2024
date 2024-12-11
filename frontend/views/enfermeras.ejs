@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sección</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+</head>
+<body>
+    <!-- inicio menu desplegable-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Centro Médico</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" href="/home">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/pacientes">Pacientes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/citas">Citas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/enfermera">Enfemeras</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/habitacion">Habitaciones</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav> <!-- fin menu desplegable-->
+
+    <!-- Contenido Principal -->
+    <div class="container mt-5">
+        <h1 class="text-center">Gestión de Enfermeras</h1>
+        <p class="text-center">Aquí puedes ver y gestionar la información del personal del centro médico.</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <!-- Botón para abrir el formulario en un modal -->
+            <button class="btn btn-success" id="btn-ver-enfermeras"type="button" data-bs-toggle="collapse" data-bs-target="#tablaEnfermeras" aria-expanded="false" aria-controls="tablaEnfermeras">
+                Lista de enfermeras
+            </button>
+        </div>
+    </div>
+
+    <!-- Sección de Consultas -->
+<div class="container mt-5">
+    <h2 class="text-center">Consultas</h2>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <!-- enfermeras con mas de 1 habitacion asignada-->
+        <button class="btn btn-secondary" id="btn-enfermeras-varias-habitaciones" type="button" data-bs-toggle="modal" data-bs-target="#modalVariasHabitaciones">
+            Enfermeras con Varias Habitaciones
+        </button>
+    </div>
+</div>
+
+<!-- Tabla para Listar Enfermeras -->
+<div class="collapse mt-5 w-75 mx-auto" id="tablaEnfermeras">
+    <h3 class="text-center">Lista de Enfermeras</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Turno</th>
+            </tr>
+        </thead>
+        <tbody id="tablaCuerpoEnfermeras">
+            <!-- Aquí se insertarán las filas dinámicamente -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para mostrar enfermeras con más de una habitación -->
+<div class="modal fade" id="modalVariasHabitaciones" tabindex="-1" aria-labelledby="modalVariasHabitacionesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVariasHabitacionesLabel">Enfermeras con Más de Una Habitación Asignada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Turno</th>
+                            <th>Total Habitaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaVariasHabitaciones">
+                        <!-- Aquí se insertarán las filas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btn-ver-enfermeras').addEventListener('click', async function () {
+        const tabla = document.getElementById('tablaCuerpoEnfermeras');
+
+        // Verifica si ya se cargaron los datos
+        if (tabla.children.length === 0) {
+            // Mensaje inicial
+            tabla.innerHTML = '<tr><td colspan="3">Cargando...</td></tr>';
+
+            try {
+                // Solicitud al backend
+                const response = await fetch('http://localhost:8080/enfermera/todas');
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener la lista de enfermeras');
+                }
+
+                const data = await response.json();
+
+                // Limpiar la tabla
+                tabla.innerHTML = '';
+
+                // Llenar la tabla con los datos obtenidos
+                data.forEach(enfermera => {
+                    const fila = `
+                        <tr>
+                            <td>${enfermera.id_enfermera}</td>
+                            <td>${enfermera.nombre}</td>
+                            <td>${enfermera.turno}</td>
+                        </tr>
+                    `;
+                    tabla.insertAdjacentHTML('beforeend', fila);
+                });
+            } catch (error) {
+                console.error(error);
+                tabla.innerHTML = `<tr><td colspan="3" style="color: red;">Error: ${error.message}</td></tr>`;
+            }
+        }
+    });
+</script>
+
+
+<script>
+    document.getElementById('btn-enfermeras-varias-habitaciones').addEventListener('click', async function () {
+        const tabla = document.getElementById('tablaVariasHabitaciones');
+        tabla.innerHTML = '<tr><td colspan="2">Cargando...</td></tr>'; // Mensaje inicial
+
+        try {
+            // Solicitud al endpoint del backend
+            const response = await fetch('http://localhost:8080/enfermera/1-mas-hab');
+
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos');
+            }
+
+            const data = await response.json();
+
+            // Limpiar la tabla
+            tabla.innerHTML = '';
+
+            // Llenar la tabla con los datos obtenidos
+            data.forEach(enfermera => {
+                const fila = `
+                    <tr>
+                        <td>${enfermera.nombre}</td>
+                        <td>${enfermera.turno}</td>
+                        <td>${enfermera.total_habitaciones}</td>
+                    </tr>
+                `;
+                tabla.insertAdjacentHTML('beforeend', fila);
+            });
+        } catch (error) {
+            console.error(error);
+            tabla.innerHTML = '<tr><td colspan="2" style="color: red;">Error: ' + error.message + '</td></tr>';
+        }
+    });
+</script>
+
+
+    <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
