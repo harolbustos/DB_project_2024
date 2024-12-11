@@ -3,7 +3,6 @@ const cors = require("cors");
 const app = express();
 const { PORT } = require('./config.js');
 const path = require('path');
-const dotenv = require('dotenv').config();
 var jwtAuthenticated = require('./helpers/jwtAuthenticated.js');
 var getCurrentUser = require('./helpers/getCurrentUser.js');
 var bodyParser = require('body-parser');
@@ -29,9 +28,24 @@ app.get('/', (req, res) => {
     res.redirect('home')
 });
 
-app.get('/home', jwtAuthenticated, async(req, res) => {
-    const currentUser = await getCurrentUser(req);
-    res.render('home', {user: {name: currentUser.name}});
+app.get('/home', (req, res) => {
+    res.render('home', { message: "Bienvenido a la gestion del centro medico" });
+});
+
+app.get('/pacientes', (req, res) => {
+    res.render('pacientes', { title: 'Gestión de Pacientes' });
+});
+
+app.get('/citas', (req, res) => {
+    res.render('citas');
+});
+
+app.get('/enfermeras', (req, res) => {
+    res.render('enfermeras');
+});
+
+app.get('/habitaciones', (req, res) => {
+    res.render('habitaciones');
 });
 
 app.listen(PORT, () => {
