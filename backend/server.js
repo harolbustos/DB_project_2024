@@ -12,6 +12,7 @@ const citaRouter = require('./routes/cita.js');
 const habitacionRouter = require('./routes/habitacion.js');
 const enfermeraRouter= require('./routes/enfermera.js');
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());

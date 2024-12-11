@@ -64,16 +64,54 @@ const userLogin = async (req, res) => {
     }
 };
 
+const registrarUsuario = async (req, res) => {
+    try {
+        const { id_usuario, num_hab, name, apellido, sexo, age, rut } = req.body;
+        console.log(req.body);
+
+        if (!id_usuario || !num_hab || !name || !apellido || !sexo || !age || !rut) {
+            return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+        }
+        
+        const result = await pool.query(
+            `INSERT INTO usuario (id_usuario, num_hab, name, apellido, sexo, age, rut)
+            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+            [id_usuario, num_hab, name, apellido, sexo, age, rut]
+        );
+
+        res.status(201).json({ message: 'Paciente registrado exitosamente', paciente: result.rows[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al registrar el paciente' });
+    }
+};
+
+
 const userMaxAge = async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT NAME, MAX(AGE) FROM USUARIO GROUP BY NAME');
-        res.json(result.rows[0]);
+            'SELECT NAME, AGE FROM USUARIO ORDER BY AGE DESC LIMIT 1'
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No hay pacientes registrados' });
+        }
+        res.json(result.rows[0]); 
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al obtener la edad máxima de los pacientes');
     }
 };
+
+const getAllPatients = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM usuario ORDER BY id_usuario ASC');
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener los pacientes');
+    }
+};
+
 
 const usersTotFact = async (req, res) => {
     try {
@@ -111,5 +149,7 @@ module.exports = {
     userRegister, 
     userLogin, userMaxAge, 
     usersTotFact,
-    userMultDoctors 
+    userMultDoctors,
+    getAllPatients,
+    registrarUsuario
 };

@@ -7,10 +7,12 @@ const {
     userLogin,
     userMaxAge,
     usersTotFact,
-    userMultDoctors
+    userMultDoctors,
+    getAllPatients,
+    registrarUsuario
 } = require('../controllers/users.controllers.js')
 
-const router = express.Router(); //para exportar a otro archivo
+const router = express.Router();
 
 router.get('/register', (req, res) => {
     res.render('register')
@@ -24,10 +26,16 @@ router.get('/login', (req, res) => {
 
 router.post('/login', userLogin);
 
+
+
+router.post('/registrar', registrarUsuario);
+
 router.get('/edad-maxima', userMaxAge);
 
 router.get('/total-facturas', usersTotFact)
 
 router.get('/multiples-doctors', userMultDoctors)
 
-module.exports = router; //exportar
+router.get('/pacientes-todos', getAllPatients);
+
+module.exports = router;
